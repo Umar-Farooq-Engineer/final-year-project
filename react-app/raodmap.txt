@@ -1,0 +1,86 @@
+COMPLETE TOPIC ROADMAP (Deep Learning + CNN + API)
+🟢 Phase 1: Python & ML Basics
+
+NumPy
+
+Pandas (DataFrame)
+
+Matplotlib
+
+Train/Test split
+
+Overfitting vs Underfitting
+
+🟢 Phase 2: Deep Learning Fundamentals
+
+What is Neural Network
+
+Activation functions (ReLU, Softmax)
+
+Loss functions
+
+Optimizers (Adam)
+
+Epoch, Batch size
+
+🟢 Phase 3: CNN (Very Important)
+
+Convolution Layer
+
+Kernel / Filter
+
+MaxPooling
+
+Flatten
+
+Dropout
+
+Image augmentation
+
+Transfer Learning (MobileNet / ResNet) ⭐
+
+🟢 Phase 4: Model Training
+
+Dataset preparation
+
+Accuracy vs Loss
+
+Confusion Matrix
+
+Model evaluation
+
+Saving & loading model
+
+🟢 Phase 5: Flask API
+
+REST API basics
+
+File upload in Flask
+
+CORS
+
+Image preprocessing
+
+JSON response
+
+🟢 Phase 6: React Integration
+
+File upload
+
+Fetch API / Axios
+
+Showing prediction result
+
+Error handling
+
+🟢 Phase 7: Production Level (FYP strong)
+
+Use Transfer Learning
+
+Save prediction history
+
+Admin dashboard
+
+Deploy Flask API
+
+Model versioning

@@ -1,0 +1,29 @@
+Step 1: Create venv with Python 3.12
+--not need step 1
+-- cd MLModel 
+--run this ===>venv\Scripts\activate
+--cd backend
+--python app.py
+-- remember inner venv is not usefull
+py -3.12 -m venv venv
+Step 2: Activate it
+venv\Scripts\activate
+Now your terminal should show:
+(venv) PS C:\...
+Step 3: Check version
+python --version
+Step 4: Run your project
+python app.py
+
+
+py -0 tells how many versions have
+
+
+
+pip install flask                    or        python -m pip install flask
+pip install tensorflow
+pip install numpy
+pip install pandas
+pip install flask-cors
+
+

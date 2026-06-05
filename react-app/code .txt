@@ -1,0 +1,184 @@
+//Dataset
+
+dataset/
+ ├── train/
+ │    ├── Early_Blight/
+ │    ├── Late_Blight/
+ │    └── Healthy/
+ └── validation/
+
+
+//Step 2: Image Preprocessing
+
+
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+
+img_size = (224, 224)
+batch_size = 32
+
+train_gen = ImageDataGenerator(
+    rescale=1./255,
+    rotation_range=20,
+    zoom_range=0.2,
+    horizontal_flip=True
+)
+
+val_gen = ImageDataGenerator(rescale=1./255)
+
+train_data = train_gen.flow_from_directory(
+    "dataset/train",
+    target_size=img_size,
+    batch_size=batch_size,
+    class_mode="categorical"
+)
+
+val_data = val_gen.flow_from_directory(
+    "dataset/validation",
+    target_size=img_size,
+    batch_size=batch_size,
+    class_mode="categorical"
+)
+
+
+//Step 3: Build CNN Model
+
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
+
+model = Sequential([
+    Conv2D(32, (3,3), activation='relu', input_shape=(224,224,3)),
+    MaxPooling2D(2,2),
+
+    Conv2D(64, (3,3), activation='relu'),
+    MaxPooling2D(2,2),
+
+    Conv2D(128, (3,3), activation='relu'),
+    MaxPooling2D(2,2),
+
+    Flatten(),
+    Dense(128, activation='relu'),
+    Dropout(0.5),
+    Dense(3, activation='softmax')
+])
+
+
+//Step 4: Compile & Train
+
+
+model.compile(
+    optimizer='adam',
+    loss='categorical_crossentropy',
+    metrics=['accuracy']
+)
+
+history = model.fit(
+    train_data,
+    validation_data=val_data,
+    epochs=10
+)
+
+
+//Save Model
+
+model.save("potato_disease_model.h5")
+
+
+//Load Model (Flask side)
+
+from tensorflow.keras.models import load_model
+
+model = load_model("potato_disease_model.h5")
+
+
+
+//Flask API for Image Prediction
+
+
+
+import numpy as np
+from tensorflow.keras.preprocessing import image
+
+def preprocess_image(img_path):
+    img = image.load_img(img_path, target_size=(224,224))
+    img_array = image.img_to_array(img)
+    img_array = img_array / 255.0
+    img_array = np.expand_dims(img_array, axis=0)
+    return img_array
+
+
+
+//Flask Prediction API
+
+
+from flask import Flask, request, jsonify
+import os
+
+app = Flask(__name__)
+
+CLASS_NAMES = ['Early Blight', 'Late Blight', 'Healthy']
+
+@app.route("/predict", methods=["POST"])
+def predict():
+    file = request.files['image']
+    file_path = os.path.join("uploads", file.filename)
+    file.save(file_path)
+
+    img = preprocess_image(file_path)
+    prediction = model.predict(img)
+    class_index = np.argmax(prediction)
+
+    result = CLASS_NAMES[class_index]
+
+    return jsonify({
+        "prediction": result
+    })
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+
+
+//React → Flask Image Upload
+
+
+function uploadImage(e) {
+  const file = e.target.files[0];
+  const formData = new FormData();
+  formData.append("image", file);
+
+  fetch("http://localhost:5000/predict", {
+    method: "POST",
+    body: formData
+  })
+  .then(res => res.json())
+  .then(data => {
+    console.log(data.prediction);
+  });
+}
+
+
+<input type="file" onChange={uploadImage} />
+
+
+
+
+
+//Save Prediction in DataFrame                not impartant
+
+
+import pandas as pd
+from datetime import datetime
+
+data = {
+    "image_name": file.filename,
+    "prediction": result,
+    "date": datetime.now()
+}
+
+df = pd.DataFrame([data])
+
+df.to_csv("predictions.csv", mode='a', header=False, index=False)
+
+
+
+

@@ -1,0 +1,51 @@
+# Python
+*.py[cod]
+__pycache__/
+*.pyo
+*.pyd
+*.sqlite3
+*.log
+*.env
+.env*
+
+# Python virtual environments
+MLModel/venv/
+MLModel/backend/venv/
+venv/
+
+# Dataset and generated data
+MLModel/dataset/
+MLModel/PlantVillage/
+PlantVillage/
+
+# Node.js
+NodeJSServer/node_modules/
+NodeJSServer/dist/
+NodeJSServer/.env
+
+# React / Vite
+react-app/my-react-app/node_modules/
+react-app/my-react-app/dist/
+react-app/my-react-app/.env
+react-app/my-react-app/.vite/
+
+# VS Code and editor files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# System files
+.DS_Store
+Thumbs.db
+
+# temporary files
+*.tmp
+*.temp
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
